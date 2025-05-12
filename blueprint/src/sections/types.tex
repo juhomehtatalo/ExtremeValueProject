@@ -441,6 +441,31 @@ $A_n(x) = a_n x + b_n$ and $A(x) = a x + b$, and $a_n \to a$ and $b_n \to b$).
   fixed point of $A$.
 \end{proof}
 
+\begin{lemma}[Conjugate of translation is translation]
+  \label{lem:conjugate-translation}
+  \uses{def:translation-subgroup}
+  \lean{AffineIncrEquiv.conjugate_homOfIndex₀}
+  % \leanok
+  Let $A^{(\beta)}_s = x + \beta s$ for $s, \beta \in \bR$ as in
+  Definition~\ref{def:translation-subgroup}. Let
+  also $B \in \OriAffR$ be given by $B(x) = a x + b$. Then
+  \begin{align*}
+    B \, A^{(\beta)}_s \, B^{-1} = A^{(a \beta)}_{s} .
+  \end{align*}
+\end{lemma}
+\begin{proof}
+  % \uses{}
+  % \leanok
+  Calculate, for $x \in \bR$
+  \begin{align*}
+    (B A^{(\beta)}_s B^{-1})(x) \; = \; & (B A^{(\beta)}_s)\big( \frac{x-b}{a} \big) \\
+    \; = \; & B\big( \frac{x-b}{a} + \beta s \big) \\
+    \; = \; & a \big( \frac{x-b}{a} + \beta s \big) + b \\
+    \; = \; & x - b + a \beta s + b \\
+    \; = \; & x + a \beta s \; = \; A^{(a \beta)}_s(x).
+  \end{align*}
+\end{proof}
+
 \begin{definition}[Subgroup fixing a point]
   \label{def:fixing-subgroup}
   \uses{def:oriented-affine-isomorphism}
@@ -483,6 +508,32 @@ $A_n(x) = a_n x + b_n$ and $A(x) = a x + b$, and $a_n \to a$ and $b_n \to b$).
     A(x) = e^s x + c (1 - e^s) = e^s \big( x - c \big) + c .
   \end{align*}
   This shows $A = A_s$ as desired (with $A_s$ as in Definition~\ref{def:fixing-subgroup}).
+\end{proof}
+
+\begin{lemma}[Conjugate of fixing is fixing image]
+  \label{lem:conjugate-fixing}
+  \uses{def:fixing-subgroup}
+  \lean{AffineIncrEquiv.conjugate_homOfIndex}
+  % \leanok
+  Let $A^{(\alpha;c)}_s = e^{\alpha s} (x - c) + c$ for $\alpha, c \in \bR$ as in
+  Definition~\ref{def:fixing-subgroup}. Let
+  also $B \in \OriAffR$ be given by $B(x) = a x + b$. Then
+  \begin{align*}
+    B \, A^{(\alpha;c)}_s \, B^{-1} = A^{(\alpha;B(c))}_{s} .
+  \end{align*}
+\end{lemma}
+\begin{proof}
+  % \uses{}
+  % \leanok
+  Calculate, for $x \in \bR$
+  \begin{align*}
+    (B A^{(\alpha;c)}_s B^{-1})(x) \; = \; & (B A^{(\alpha;c)}_s)\big( \frac{x-b}{a} \big) \\
+    \; = \; & B\big( e^{\alpha s} (\frac{x-b}{a} - c) + c \big) \\
+    \; = \; & a e^{\alpha s} (\frac{x-b}{a} - c) + a c + b \\
+    \; = \; & e^{\alpha s} \big( x - (a c + b) \big) + (a c + b) \\
+    \; = \; & e^{\alpha s} \big( x - B(c) \big) + B(c) \\
+    \; = \; & A^{(\alpha;B(c))}_s (x) .
+  \end{align*}
 \end{proof}
 
 
@@ -667,9 +718,9 @@ $A_n(x) = a_n x + b_n$ and $A(x) = a x + b$, and $a_n \to a$ and $b_n \to b$).
 
 \begin{lemma}[Self-similar continuous c.d.f. family characterization $\gamma = 0$]
   \label{lem:characterization-self-similar-family-zero-index}
-  \uses{def:lem:oriented-affine-action-on-cdf}
-  % \lean{}
-  % \leanok
+  \uses{def:lem:oriented-affine-action-on-cdf, def:translation-subgroup}
+  \lean{gumbel_type_of_selfSimilar_index_zero', gumbel_type_of_selfSimilar_index_zero}
+  \leanok
   Suppose that $G$ is a nondegenerate c.d.f. such that
   \begin{align*}
     G^{t} = A_t . G \qquad \text{ for any } t > 0 ,
@@ -690,6 +741,7 @@ $A_n(x) = a_n x + b_n$ and $A(x) = a x + b$, and $a_n \to a$ and $b_n \to b$).
 \end{lemma}
 \begin{proof}
   %\uses{lem:solution-functional-eqn-translation-no-scaling}
+  \uses{lem:no-fixed-point-implies-translation}
   % \leanok
 
   Since $G$ is nondegenerate, there exists an $x_0 \in \bR$
@@ -721,9 +773,9 @@ $A_n(x) = a_n x + b_n$ and $A(x) = a x + b$, and $a_n \to a$ and $b_n \to b$).
 
 \begin{lemma}[Self-similar continuous c.d.f. family characterization $\gamma > 0$]
   \label{lem:characterization-self-similar-family-pos-index}
-  \uses{def:lem:oriented-affine-action-on-cdf}
-  % \lean{}
-  % \leanok
+  \uses{def:lem:oriented-affine-action-on-cdf, def:fixing-subgroup}
+  \lean{frechet_type_of_selfSimilar_index_pos', frechet_type_of_selfSimilar_index_pos}
+  \leanok
   Suppose that $G$ is a nondegenerate c.d.f. such that
   \begin{align*}
     G^{t} = A_t . G \qquad \text{ for any } t > 0 ,
@@ -745,6 +797,7 @@ $A_n(x) = a_n x + b_n$ and $A(x) = a x + b$, and $a_n \to a$ and $b_n \to b$).
 \end{lemma}
 \begin{proof}
   %\uses{lem:solution-functional-eqn-translation-with-scaling}
+  \uses{lem:fixing-subgroup-characterization}
   % \leanok
 
   Since $G$ is nondegenerate, there exists an $x_0 \in \bR$
@@ -795,8 +848,8 @@ $A_n(x) = a_n x + b_n$ and $A(x) = a x + b$, and $a_n \to a$ and $b_n \to b$).
 \begin{lemma}[Self-similar continuous c.d.f. family characterization $\gamma < 0$]
   \label{lem:characterization-self-similar-family-neg-index}
   \uses{def:lem:oriented-affine-action-on-cdf}
-  % \lean{}
-  % \leanok
+  \lean{weibull_type_of_selfSimilar_index_neg', weibull_type_of_selfSimilar_index_neg}
+  \leanok
   Suppose that $G$ is a nondegenerate c.d.f. such that
   \begin{align*}
     G^{t} = A_t . G \qquad \text{ for any } t > 0 ,
@@ -819,7 +872,11 @@ $A_n(x) = a_n x + b_n$ and $A(x) = a x + b$, and $a_n \to a$ and $b_n \to b$).
 \begin{proof}
   %\uses{lem:solution-functional-eqn-scaling,
   %  lem:solution-functional-eqn-translation-exp-zero}
+  \uses{lem:fixing-subgroup-characterization}
   % \leanok
+
+  \emph{(Note: The Lean formalized statement uses the opposite sign of $\alpha$:
+  it is assumed that $\alpha < 0$ and $A_t(x) = t^{+\alpha} (x-c) + c$.)}
 
   Since $G$ is nondegenerate, there exists an $x_0 \in \bR$
   with $0 < G(x_0) < 1$. Write $q = -\log G(x_0) > 0$,
